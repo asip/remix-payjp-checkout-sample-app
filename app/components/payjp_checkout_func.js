@@ -1,15 +1,27 @@
 import React, { useEffect } from "react";
 
-function PayjpCheckoutFunc(props) {
-
+function PayjpCheckoutFunc({
+   className = 'payjp-button',
+   dataKey = undefined,
+   dataPartial = undefined,
+   dataText = undefined,
+   dataSubmitText = undefined,
+   dataTokenName = undefined,
+   dataPreviousToken = undefined,
+   dataLang = undefined,
+   dataNamePlaceholder = undefined,
+   dataTenant = undefined,
+   onCreatedHandler = () => undefined,
+   onFailedHandler = () => undefined
+  }) {
   const onCreated = (response) => {
     const payload = {token: response.id}
-    props.onCreatedHandler(payload);
+    onCreatedHandler(payload);
   }
 
   const onFailed = (statusCode, errorResponse) => {
     const payload = {message: errorResponse.message}
-    props.onFailedHandler(payload);
+    onFailedHandler(payload);
   }
 
   useEffect(() => {
@@ -24,18 +36,18 @@ function PayjpCheckoutFunc(props) {
 
     const script = document.createElement('script');
     script.src = 'https://checkout.pay.jp/';
-    script.classList.add(props.className);
-    script.dataset['key'] = props.dataKey;
-    props.dataPartial ? (script.dataset['partial'] = props.dataPartial) : (script.dataset['partial'] = 'false')
-    props.dataText && (script.dataset['text'] = props.dataText);
-    props.dataSubmitText && (script.dataset['submitText'] = props.dataSubmitText);
-    props.dataTokenName && (script.dataset['tokenName'] = props.dataTokenName);
-    props.dataPreviousToken && (script.dataset['previousToken'] = props.dataPreviousToken);
-    props.dataLang && (script.dataset['lang'] = props.dataLang);
+    script.classList.add(className);
+    script.dataset['key'] = dataKey;
+    dataPartial ? (script.dataset['partial'] = dataPartial) : (script.dataset['partial'] = 'false')
+    dataText && (script.dataset['text'] = dataText);
+    dataSubmitText && (script.dataset['submitText'] = dataSubmitText);
+    dataTokenName && (script.dataset['tokenName'] = dataTokenName);
+    dataPreviousToken && (script.dataset['previousToken'] = dataPreviousToken);
+    dataLang && (script.dataset['lang'] = dataLang);
     script.dataset['onCreated'] = 'payjpCheckoutOnCreated';
     script.dataset['onFailed'] = 'payjpCheckoutOnFailed';
-    props.dataNamePlaceholder && (script.dataset['namePlaceholder'] = props.dataNamePlaceholder);
-    props.dataTenant && (script.dataset['tenant'] = props.dataTenant);
+    dataNamePlaceholder && (script.dataset['namePlaceholder'] = dataNamePlaceholder);
+    dataTenant && (script.dataset['tenant'] = dataTenant);
 
     //console.log(script);
     let payjpCheckoutElement = document.getElementById('payjpCheckout');
@@ -53,9 +65,5 @@ function PayjpCheckoutFunc(props) {
 
   return (<div id="payjpCheckout"></div>);
 }
-
-PayjpCheckoutFunc.defaultProps = {
-  className: 'payjp-button'
-};
 
 export default PayjpCheckoutFunc;
