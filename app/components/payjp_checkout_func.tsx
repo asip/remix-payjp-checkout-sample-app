@@ -1,5 +1,29 @@
 import React, { useEffect } from "react";
 
+interface Window {
+  payjpCheckoutOnCreated: ((response: any) => void) | null
+  payjpCheckoutOnFailed: ((statusCode: any, errorResponse: any) => void) | null
+  alert: () => void
+  PayjpCheckoutFunc:  any | null
+}
+
+declare var window: Window
+
+interface PayjpCheckoutFuncProps {
+  className?: string
+  dataKey?: string
+  dataPartial?: string
+  dataText?: string
+  dataSubmitText?: string
+  dataTokenName?:  string
+  dataPreviousToken?: string
+  dataLang?: string
+  dataNamePlaceholder?: string
+  dataTenant?: string,
+  onCreatedHandler: ((payload: any) => void)
+  onFailedHandler: ((payload: any) => void)
+}
+
 function PayjpCheckoutFunc({
    className = 'payjp-button',
    dataKey = undefined,
@@ -11,15 +35,15 @@ function PayjpCheckoutFunc({
    dataLang = undefined,
    dataNamePlaceholder = undefined,
    dataTenant = undefined,
-   onCreatedHandler = () => undefined,
-   onFailedHandler = () => undefined
-  }) {
-  const onCreated = (response) => {
+   onCreatedHandler = payload => {},
+   onFailedHandler = payload => {}
+  }: PayjpCheckoutFuncProps) {
+  const onCreated = (response: any) => {
     const payload = {token: response.id}
     onCreatedHandler(payload);
   }
 
-  const onFailed = (statusCode, errorResponse) => {
+  const onFailed = (statusCode: any, errorResponse: any) => {
     const payload = {message: errorResponse.message}
     onFailedHandler(payload);
   }
