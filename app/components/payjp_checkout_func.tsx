@@ -4,7 +4,7 @@ interface Window {
   payjpCheckoutOnCreated: ((response: any) => void) | null
   payjpCheckoutOnFailed: ((statusCode: any, errorResponse: any) => void) | null
   alert: () => void
-  PayjpCheckoutFunc:  any | null
+  PayjpCheckout:  any | null
 }
 
 declare var window: Window
@@ -83,7 +83,7 @@ function PayjpCheckoutFunc({
       window.payjpCheckoutOnCreated = null;
       window.payjpCheckoutOnFailed = null;
       window.alert = windowAlertBackUp;
-      window.PayjpCheckoutFunc = null;
+      window.PayjpCheckout = null;
     }
   })
 

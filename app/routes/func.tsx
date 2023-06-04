@@ -48,8 +48,8 @@ export default function Func() {
   return (
     <div className="payjpButtonArea">
       <div>function component</div>
-      {/*<div><Link to="/" >class component</Link></div>*/}
-      <div><a href="/">class component</a></div>
+      <div><Link to="/" >class component</Link></div>
+      {/* <div><a href="/">class component</a></div> */}
       { checkout }
     </div>
   );

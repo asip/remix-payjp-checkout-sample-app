@@ -4,7 +4,7 @@ interface Window {
   payjpCheckoutOnCreated: ((response: any) => void) | null
   payjpCheckoutOnFailed: ((statusCode: any, errorResponse: any) => void) | null
   alert: () => void
-  PayjpCheckoutClass:  any | null
+  PayjpCheckout:  any | null
   payjpCheckoutContext: any
 }
 
@@ -81,7 +81,7 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
     window.payjpCheckoutOnFailed = null;
     window.payjpCheckoutContext = null;
     window.alert = this.windowAlertBackUp;
-    window.PayjpCheckoutClass = null;
+    window.PayjpCheckout = null;
   }
 
   shouldComponentUpdate(nextProps: any, nextState: any, nextContext: any) {
