@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 interface Window {
   payjpCheckoutOnCreated: ((response: any) => void) | null
   payjpCheckoutOnFailed: ((statusCode: any, errorResponse: any) => void) | null
-  alert: () => void
+  // alert: () => void
   PayjpCheckout:  any | null
 }
 
@@ -49,12 +49,12 @@ function PayjpCheckoutFunc({
   }
 
   useEffect(() => {
-    const windowAlertBackUp = window.alert;
+    // const windowAlertBackUp = window.alert;
     window.payjpCheckoutOnCreated = onCreated;
     window.payjpCheckoutOnFailed = onFailed;
-    // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
+    /* // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
     window.alert = () => {
-    };
+    }; */
 
     //console.log(props);
 
@@ -82,7 +82,7 @@ function PayjpCheckoutFunc({
       payjpCheckoutElement && payjpCheckoutElement.removeChild(script);
       window.payjpCheckoutOnCreated = null;
       window.payjpCheckoutOnFailed = null;
-      window.alert = windowAlertBackUp;
+      // window.alert = windowAlertBackUp;
       window.PayjpCheckout = null;
     }
   })

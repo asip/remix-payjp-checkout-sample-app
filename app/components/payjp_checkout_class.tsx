@@ -3,7 +3,7 @@ import React from 'react';
 interface Window {
   payjpCheckoutOnCreated: ((response: any) => void) | null
   payjpCheckoutOnFailed: ((statusCode: any, errorResponse: any) => void) | null
-  alert: () => void
+  // alert: () => void
   PayjpCheckout:  any | null
   payjpCheckoutContext: any
 }
@@ -30,7 +30,7 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
   payjpCheckoutElement: HTMLElement | null
   script!: HTMLScriptElement
 
-  windowAlertBackUp!: () => void
+  // windowAlertBackUp!: () => void
 
   constructor(props: PayjpCheckoutClassProps) {
     super(props);
@@ -47,13 +47,13 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
   };
 
   componentDidMount() {
-    this.windowAlertBackUp = window.alert;
+    // this.windowAlertBackUp = window.alert;
     window.payjpCheckoutOnCreated = this.onCreated;
     window.payjpCheckoutOnFailed = this.onFailed;
     window.payjpCheckoutContext = this;
-    // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
+    /* // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
     window.alert = () => {
-    };
+    }; */
 
     this.script = document.createElement('script');
     this.script.src = 'https://checkout.pay.jp/';
@@ -80,7 +80,7 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
     window.payjpCheckoutOnCreated = null;
     window.payjpCheckoutOnFailed = null;
     window.payjpCheckoutContext = null;
-    window.alert = this.windowAlertBackUp;
+    // window.alert = this.windowAlertBackUp;
     window.PayjpCheckout = null;
   }
 
