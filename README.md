@@ -1,4 +1,6 @@
-# Welcome to Remix!
+# PAY.JP Checkout Sample App with Remix
+
+## Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
 
@@ -50,4 +52,9 @@ cd my-new-remix-app
 rm -rf app
 # copy your app over
 cp -R ../my-old-remix-app/app app
+
+## License
+
+The MIT License (MIT).
+
 ```
