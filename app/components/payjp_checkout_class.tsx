@@ -71,12 +71,12 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
     this.props.dataTenant && (this.script.dataset['tenant'] = this.props.dataTenant);
 
     this.payjpCheckoutElement = document.getElementById('payjpCheckout');
-    this.payjpCheckoutElement && this.payjpCheckoutElement.appendChild(this.script);
+    this.payjpCheckoutElement?.appendChild(this.script);
   }
 
   componentWillUnmount() {
     // すでに https://checkout.pay.jp/ の checkout.js が実行済みで、script タグを削除しているだけ
-    this.payjpCheckoutElement && this.payjpCheckoutElement.removeChild(this.script);
+    this.payjpCheckoutElement?.removeChild(this.script);
     window.payjpCheckoutOnCreated = null;
     window.payjpCheckoutOnFailed = null;
     window.payjpCheckoutContext = null;

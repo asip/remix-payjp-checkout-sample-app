@@ -75,11 +75,11 @@ function PayjpCheckoutFunc({
 
     //console.log(script);
     let payjpCheckoutElement = document.getElementById('payjpCheckout');
-    payjpCheckoutElement && payjpCheckoutElement.appendChild(script);
+    payjpCheckoutElement?.appendChild(script);
 
     return () => {
       // すでに https://checkout.pay.jp/ の checkout.js が実行済みで、script タグを削除しているだけ
-      payjpCheckoutElement && payjpCheckoutElement.removeChild(script);
+      payjpCheckoutElement?.removeChild(script);
       window.payjpCheckoutOnCreated = null;
       window.payjpCheckoutOnFailed = null;
       // window.alert = windowAlertBackUp;
