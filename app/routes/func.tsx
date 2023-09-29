@@ -1,10 +1,10 @@
-import type { V2_MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/node";
 import { useState, useEffect } from "react";
 import { json } from "@remix-run/node"
 import { Link, useLoaderData } from '@remix-run/react';
 import PayjpCheckoutFunc from '~/components/payjp_checkout_func'
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Remix Pay.jp Checkout sample App" }];
 };
 
