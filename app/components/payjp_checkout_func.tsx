@@ -35,8 +35,8 @@ function PayjpCheckoutFunc({
    dataLang = undefined,
    dataNamePlaceholder = undefined,
    dataTenant = undefined,
-   onCreatedHandler = payload => {},
-   onFailedHandler = payload => {}
+   onCreatedHandler = () => {},
+   onFailedHandler = () => {}
   }: PayjpCheckoutFuncProps) {
   const onCreated = (response: any) => {
     const payload = {token: response.id}
