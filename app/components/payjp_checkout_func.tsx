@@ -1,13 +1,38 @@
 import React, { useEffect } from "react";
 
+interface CheckoutResponse {
+  // card: any
+  // created: number
+  id: string
+  // livemode: boolean
+  // object: string
+  // used: boolean
+}
+
+interface CheckoutErrorResponse {
+  // code: string
+  message: string
+  // status: number // http (response) status code
+  // type: string
+}
+
 interface Window {
-  payjpCheckoutOnCreated: ((response: any) => void) | null
-  payjpCheckoutOnFailed: ((statusCode: any, errorResponse: any) => void) | null
+  payjpCheckoutOnCreated: ((response: CheckoutResponse) => void) | null
+  payjpCheckoutOnFailed: ((statusCode: number, errorResponse: CheckoutErrorResponse) => void) | null
   // alert: () => void
   PayjpCheckout:  any | null
 }
 
 declare var window: Window
+
+interface PayjpCheckoutPayload {
+  token: string
+}
+
+interface PayjpCheckoutErrorPayload {
+  statusCode: number
+  message: string
+}
 
 interface PayjpCheckoutFuncProps {
   className?: string
@@ -20,8 +45,8 @@ interface PayjpCheckoutFuncProps {
   dataLang?: string
   dataNamePlaceholder?: string
   dataTenant?: string,
-  onCreatedHandler: ((payload: any) => void)
-  onFailedHandler: ((payload: any) => void)
+  onCreatedHandler: ((payload: PayjpCheckoutPayload) => void)
+  onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
 }
 
 function PayjpCheckoutFunc({
@@ -38,13 +63,13 @@ function PayjpCheckoutFunc({
    onCreatedHandler = () => {},
    onFailedHandler = () => {}
   }: PayjpCheckoutFuncProps) {
-  const onCreated = (response: any) => {
-    const payload = {token: response.id}
+  const onCreated = (response: CheckoutResponse) => {
+    const payload: PayjpCheckoutPayload = {token: response.id}
     onCreatedHandler(payload);
   }
 
-  const onFailed = (statusCode: any, errorResponse: any) => {
-    const payload = {message: errorResponse.message}
+  const onFailed = (statusCode: number, errorResponse: CheckoutErrorResponse) => {
+    const payload: PayjpCheckoutErrorPayload = {statusCode, message: errorResponse.message}
     onFailedHandler(payload);
   }
 
