@@ -1,14 +1,39 @@
 import React from 'react';
 
+interface CheckoutResponse {
+  // card: any
+  // created: number
+  id: string
+  // livemode: boolean
+  // object: string
+  // used: boolean
+}
+
+interface CheckoutErrorResponse {
+  // code: string
+  message: string
+  // status: number // http (response) status code
+  // type: string
+}
+
 interface Window {
-  payjpCheckoutOnCreated: ((response: any) => void) | null
-  payjpCheckoutOnFailed: ((statusCode: any, errorResponse: any) => void) | null
+  payjpCheckoutOnCreated: ((response: CheckoutResponse) => void) | null
+  payjpCheckoutOnFailed: ((statusCode: number, errorResponse: CheckoutErrorResponse) => void) | null
   // alert: () => void
   PayjpCheckout:  any | null
-  payjpCheckoutContext: any
+  payjpCheckoutContext: PayjpCheckoutClass | null
 }
 
 declare var window: Window
+
+interface PayjpCheckoutPayload {
+  token: string
+}
+
+interface PayjpCheckoutErrorPayload {
+  statusCode: number
+  message: string
+}
 
 interface PayjpCheckoutClassProps {
   className?: string
@@ -21,8 +46,8 @@ interface PayjpCheckoutClassProps {
   dataLang?: string
   dataNamePlaceholder?: string
   dataTenant?: string,
-  onCreatedHandler: ((payload: any) => void)
-  onFailedHandler: ((payload: any) => void)
+  onCreatedHandler: ((payload: PayjpCheckoutPayload) => void)
+  onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
 }
 
 class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
@@ -84,18 +109,18 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
     window.PayjpCheckout = null;
   }
 
-  shouldComponentUpdate(nextProps: any, nextState: any, nextContext: any) {
+  shouldComponentUpdate(_nextProps: any, _nextState: any, _nextContext: any) {
     return false;
   }
 
-  onCreated(response: any) {
-    const payload = {token: response.id}
-    window.payjpCheckoutContext.props.onCreatedHandler(payload);
+  onCreated(response: CheckoutResponse) {
+    const payload: PayjpCheckoutPayload = {token: response.id}
+    window.payjpCheckoutContext?.props.onCreatedHandler(payload);
   }
 
-  onFailed(statusCode: any, errorResponse: any) {
-    const payload = {message: errorResponse.message}
-    window.payjpCheckoutContext.props.onFailedHandler(payload);
+  onFailed(statusCode: number, errorResponse: CheckoutErrorResponse) {
+    const payload: PayjpCheckoutErrorPayload = {statusCode, message: errorResponse.message}
+    window.payjpCheckoutContext?.props.onFailedHandler(payload);
   }
 
   render() {
