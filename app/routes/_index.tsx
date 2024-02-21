@@ -2,6 +2,8 @@ import type { MetaFunction } from "@remix-run/node";
 import { useState, useEffect } from "react";
 import { json } from "@remix-run/node"
 import { Link, useLoaderData } from '@remix-run/react';
+// @ts-ignore
+import { ClientOnly } from "remix-utils/client-only"
 import PayjpCheckoutClass from '~/components/payjp_checkout_class'
 
 export const meta: MetaFunction = () => {
@@ -36,21 +38,14 @@ export default function Index() {
     console.log(payload.message)
   }
 
-  const [checkout, setCheckout] = useState<any>(null);
-
-  useEffect(() => {
-    const check = (
-      <PayjpCheckoutClass {...payjpCheckoutProps} />
-    );
-    setCheckout(check);
-  }, []);
-
   return (
     <div className="payjpButtonArea">
       <div>class component</div>
       <div><Link to="/func">function component</Link></div>
       {/* <div><a href="/func">function component</a></div> */}
-      {checkout}
+      <ClientOnly>
+        { () => <PayjpCheckoutClass {...payjpCheckoutProps} /> }
+      </ClientOnly>
     </div>
   );
 }
