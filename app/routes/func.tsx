@@ -1,6 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import { useState, useEffect } from "react";
 import { json } from "@remix-run/node"
+// @ts-ignore
+import { ClientOnly } from "remix-utils/client-only"
 import { Link, useLoaderData } from '@remix-run/react';
 import PayjpCheckoutFunc from '~/components/payjp_checkout_func'
 
@@ -50,7 +52,9 @@ export default function Func() {
       <div>function component</div>
       <div><Link to="/" >class component</Link></div>
       {/* <div><a href="/">class component</a></div> */}
-      { checkout }
+      <ClientOnly>
+        { () => <PayjpCheckoutFunc {...payjpCheckoutProps} /> }
+      </ClientOnly>
     </div>
   );
 }
