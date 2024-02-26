@@ -9,17 +9,16 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@remix-run/node": "^2.7.0",
-    "@remix-run/react": "^2.7.0",
-    "@remix-run/serve": "^2.7.0",
-    "isbot": "^3.6.13",
+    "@remix-run/node": "^2.7.2",
+    "@remix-run/react": "^2.7.2",
+    "@remix-run/serve": "^2.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-utils": "^7.5.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.7.0",
-    "@remix-run/eslint-config": "^2.7.0",
+    "@remix-run/dev": "^2.7.2",
+    "@remix-run/eslint-config": "^2.7.2",
     "@types/node": "20.11.17",
     "@types/react": "^18.2.57",
     "@types/react-dom": "^18.2.19",
