@@ -16,16 +16,6 @@ interface CheckoutErrorResponse {
   // type: string
 }
 
-interface Window {
-  payjpCheckoutOnCreated: ((response: CheckoutResponse) => void) | null
-  payjpCheckoutOnFailed: ((statusCode: number, errorResponse: CheckoutErrorResponse) => void) | null
-  // alert: () => void
-  PayjpCheckout:  any | null
-  payjpCheckoutContext: PayjpCheckoutClass | null
-}
-
-declare var window: Window
-
 interface PayjpCheckoutPayload {
   token: string
 }
@@ -34,6 +24,14 @@ interface PayjpCheckoutErrorPayload {
   statusCode: number
   message: string
 }
+
+interface PayjpWindow extends Window {
+  payjpCheckoutOnCreated: ((response: CheckoutResponse) => void) | null
+  payjpCheckoutOnFailed: ((statusCode: number, errorResponse: CheckoutErrorResponse) => void) | null
+  PayjpCheckout: any | null
+}
+
+declare const window: PayjpWindow
 
 interface PayjpCheckoutClassProps {
   className?: string
@@ -52,30 +50,28 @@ interface PayjpCheckoutClassProps {
 
 class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
 
-  payjpCheckoutElement: HTMLElement | null
-  script!: HTMLScriptElement
+  payjpCheckoutElement: HTMLElement | null = null;
+  script: HTMLScriptElement | null = null;
 
   // windowAlertBackUp!: () => void
 
   constructor(props: PayjpCheckoutClassProps) {
     super(props);
-    this.payjpCheckoutElement = null;
+    this.onCreated = this.onCreated.bind(this);
+    this.onFailed = this.onFailed.bind(this);
   }
 
   static defaultProps = {
     className: 'payjp-button',
     dataKey: '',
-    onCreatedHandler: () => {
-    },
-    onFailedHandler: () => {
-    },
+    onCreatedHandler: () => {},
+    onFailedHandler: () => {},
   };
 
   componentDidMount() {
     // this.windowAlertBackUp = window.alert;
     window.payjpCheckoutOnCreated = this.onCreated;
     window.payjpCheckoutOnFailed = this.onFailed;
-    window.payjpCheckoutContext = this;
     /* // カード情報が不正のときに window.alert が payjp の checkout から呼ばれるため
     window.alert = () => {
     }; */
@@ -83,17 +79,17 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
     this.script = document.createElement('script');
     this.script.src = 'https://checkout.pay.jp/';
     this.props.className && this.script.classList.add(this.props.className);
-    this.script.dataset['key'] = this.props.dataKey;
-    this.props.dataPartial ? (this.script.dataset['partial'] = this.props.dataPartial) : (this.script.dataset['partial'] = 'false')
-    this.props.dataText && (this.script.dataset['text'] = this.props.dataText);
-    this.props.dataSubmitText && (this.script.dataset['submitText'] = this.props.dataSubmitText);
-    this.props.dataTokenName && (this.script.dataset['tokenName'] = this.props.dataTokenName);
-    this.props.dataPreviousToken && (this.script.dataset['previousToken'] = this.props.dataPreviousToken);
-    this.props.dataLang && (this.script.dataset['lang'] = this.props.dataLang);
-    this.script.dataset['onCreated'] = 'payjpCheckoutOnCreated';
-    this.script.dataset['onFailed'] = 'payjpCheckoutOnFailed';
-    this.props.dataNamePlaceholder && (this.script.dataset['namePlaceholder'] = this.props.dataNamePlaceholder);
-    this.props.dataTenant && (this.script.dataset['tenant'] = this.props.dataTenant);
+    this.script.dataset.key = this.props.dataKey || '';
+    this.script.dataset.partial = this.props.dataPartial || 'false';
+    if (this.props.dataText) this.script.dataset.text = this.props.dataText;
+    if (this.props.dataSubmitText) this.script.dataset.submitText = this.props.dataSubmitText;
+    if (this.props.dataTokenName) this.script.dataset.tokenName = this.props.dataTokenName;
+    if (this.props.dataPreviousToken) this.script.dataset.previousToken = this.props.dataPreviousToken;
+    if (this.props.dataLang) this.script.dataset.lang = this.props.dataLang;
+    this.script.dataset.onCreated = 'payjpCheckoutOnCreated';
+    this.script.dataset.onFailed = 'payjpCheckoutOnFailed';
+    if (this.props.dataNamePlaceholder) this.script.dataset.namePlaceholder = this.props.dataNamePlaceholder;
+    if (this.props.dataTenant) this.script.dataset.tenant = this.props.dataTenant;
 
     this.payjpCheckoutElement = document.getElementById('payjpCheckout');
     this.payjpCheckoutElement?.appendChild(this.script);
@@ -101,26 +97,25 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
 
   componentWillUnmount() {
     // すでに https://checkout.pay.jp/ の checkout.js が実行済みで、script タグを削除しているだけ
-    this.payjpCheckoutElement?.removeChild(this.script);
+    this.payjpCheckoutElement?.removeChild(this.script as Node);
     window.payjpCheckoutOnCreated = null;
     window.payjpCheckoutOnFailed = null;
-    window.payjpCheckoutContext = null;
     // window.alert = this.windowAlertBackUp;
     window.PayjpCheckout = null;
   }
 
   shouldComponentUpdate(_nextProps: any, _nextState: any, _nextContext: any) {
-    return false;
+    return false; // PAY.JP スクリプトが DOM を直接操作するため、React の再レンダリングを抑制
   }
 
   onCreated(response: CheckoutResponse) {
     const payload: PayjpCheckoutPayload = {token: response.id}
-    window.payjpCheckoutContext?.props.onCreatedHandler(payload);
+    this.props.onCreatedHandler(payload);
   }
 
   onFailed(statusCode: number, errorResponse: CheckoutErrorResponse) {
     const payload: PayjpCheckoutErrorPayload = {statusCode, message: errorResponse.message}
-    window.payjpCheckoutContext?.props.onFailedHandler(payload);
+    this.props.onFailedHandler(payload);
   }
 
   render() {
