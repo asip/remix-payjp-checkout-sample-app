@@ -1,10 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 import { useState, useEffect } from "react";
 import { json } from "@remix-run/node"
+import { Link, useLoaderData } from '@remix-run/react';
 // @ts-ignore
 import { ClientOnly } from "remix-utils/client-only"
-import { Link, useLoaderData } from '@remix-run/react';
-import PayjpCheckoutFunc from '~/components/payjp_checkout_func'
+import PayjpCheckoutClass from '~/components/payjp_checkout_class'
 
 export const meta: MetaFunction = () => {
   return [{ title: "Remix Pay.jp Checkout sample App" }];
@@ -18,7 +18,7 @@ export async function loader() {
   });
 }
 
-export default function Func() {
+export default function Class() {
   const data = useLoaderData<typeof loader>();
 
   const payjpCheckoutProps = {
@@ -38,22 +38,13 @@ export default function Func() {
     console.log(payload.message)
   }
 
-  const [checkout, setCheckout] = useState<any>(null);
-
-  useEffect(() => {
-    const check = (
-      <PayjpCheckoutFunc {...payjpCheckoutProps} />
-    );
-    setCheckout(check);
-  }, []);
-
   return (
     <div className="payjpButtonArea">
-      <div>function component</div>
-      <div><Link to="/" >class component</Link></div>
-      {/* <div><a href="/">class component</a></div> */}
+      <div>class component</div>
+      <div><Link to="/">function component</Link></div>
+      {/* <div><a href="/func">function component</a></div> */}
       <ClientOnly>
-        { () => <PayjpCheckoutFunc {...payjpCheckoutProps} /> }
+        { () => <PayjpCheckoutClass {...payjpCheckoutProps} /> }
       </ClientOnly>
     </div>
   );

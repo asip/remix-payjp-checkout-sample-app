@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 interface CheckoutResponse {
   // card: any
@@ -52,6 +52,7 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
 
   payjpCheckoutElement: HTMLElement | null = null;
   script: HTMLScriptElement | null = null;
+  props: any;
 
   // windowAlertBackUp!: () => void
 
