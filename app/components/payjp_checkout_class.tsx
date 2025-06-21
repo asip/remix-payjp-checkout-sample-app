@@ -52,7 +52,6 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
 
   payjpCheckoutElement: HTMLElement | null = null;
   script: HTMLScriptElement | null = null;
-  props: any;
 
   // windowAlertBackUp!: () => void
 
