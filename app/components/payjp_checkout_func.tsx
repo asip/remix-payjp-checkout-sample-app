@@ -109,7 +109,7 @@ function PayjpCheckoutFunc({
       // window.alert = windowAlertBackUp;
       window.PayjpCheckout = null;
     }
-  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant, onCreated, onFailed])
+  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant])
 
   return (<div id="payjpCheckout"></div>);
 }
