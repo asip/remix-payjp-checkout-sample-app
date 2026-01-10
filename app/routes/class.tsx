@@ -4,7 +4,7 @@ import { json } from "@remix-run/node"
 import { Link, useLoaderData } from '@remix-run/react';
 // @ts-ignore
 import { ClientOnly } from "remix-utils/client-only"
-import PayjpCheckoutClass from '~/components/payjp_checkout_class'
+import PayjpCheckout from '~/components/class/payjp-checkout'
 
 export const meta: MetaFunction = () => {
   return [{ title: "Remix Pay.jp Checkout sample App" }];
@@ -44,7 +44,7 @@ export default function Class() {
       <div><Link to="/">function component</Link></div>
       {/* <div><a href="/func">function component</a></div> */}
       <ClientOnly>
-        { () => <PayjpCheckoutClass {...payjpCheckoutProps} /> }
+        { () => <PayjpCheckout {...payjpCheckoutProps} /> }
       </ClientOnly>
     </div>
   );

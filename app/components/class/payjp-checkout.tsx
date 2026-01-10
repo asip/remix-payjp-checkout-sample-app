@@ -33,7 +33,7 @@ interface PayjpWindow extends Window {
 
 declare const window: PayjpWindow
 
-interface PayjpCheckoutClassProps {
+interface PayjpCheckoutProps {
   className?: string
   dataKey?: string
   dataPartial?: string
@@ -48,14 +48,14 @@ interface PayjpCheckoutClassProps {
   onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
 }
 
-class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
+class PayjpCheckout extends React.Component<PayjpCheckoutProps> {
 
   payjpCheckoutElement: HTMLElement | null = null;
   script: HTMLScriptElement | null = null;
 
   // windowAlertBackUp!: () => void
 
-  constructor(props: PayjpCheckoutClassProps) {
+  constructor(props: PayjpCheckoutProps) {
     super(props);
     this.onCreated = this.onCreated.bind(this);
     this.onFailed = this.onFailed.bind(this);
@@ -123,4 +123,4 @@ class PayjpCheckoutClass extends React.Component<PayjpCheckoutClassProps> {
   }
 }
 
-export default PayjpCheckoutClass;
+export default PayjpCheckout;

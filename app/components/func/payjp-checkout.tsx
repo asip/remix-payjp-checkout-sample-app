@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 interface CheckoutResponse {
   // card: any
@@ -34,7 +34,7 @@ interface Window {
 
 declare var window: Window
 
-interface PayjpCheckoutFuncProps {
+interface PayjpCheckoutProps {
   className?: string
   dataKey?: string
   dataPartial?: string
@@ -49,7 +49,7 @@ interface PayjpCheckoutFuncProps {
   onFailedHandler: ((payload: PayjpCheckoutErrorPayload) => void)
 }
 
-function PayjpCheckoutFunc({
+const PayjpCheckout = ({
   className = 'payjp-button',
   dataKey,
   dataPartial,
@@ -62,16 +62,16 @@ function PayjpCheckoutFunc({
   dataTenant,
   onCreatedHandler = () => undefined,
   onFailedHandler = () => undefined
-}: PayjpCheckoutFuncProps) {
-  const onCreated = (response: CheckoutResponse) => {
+}: PayjpCheckoutProps) => {
+  const onCreated = useCallback((response: CheckoutResponse) => {
     const payload: PayjpCheckoutPayload = {token: response.id}
     onCreatedHandler(payload);
-  }
+  }, [onCreatedHandler])
 
-  const onFailed = (statusCode: number, errorResponse: CheckoutErrorResponse) => {
+  const onFailed = useCallback((statusCode: number, errorResponse: CheckoutErrorResponse) => {
     const payload: PayjpCheckoutErrorPayload = {statusCode, message: errorResponse.message}
     onFailedHandler(payload);
-  }
+  }, [onFailedHandler])
 
   useEffect(() => {
     // const windowAlertBackUp = window.alert;
@@ -109,9 +109,9 @@ function PayjpCheckoutFunc({
       // window.alert = windowAlertBackUp;
       window.PayjpCheckout = null;
     }
-  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant])
+  }, [className, dataKey, dataPartial, dataText, dataSubmitText, dataTokenName, dataPreviousToken, dataLang, dataNamePlaceholder, dataTenant, onCreated, onFailed]) // 依存配列を追加
 
   return (<div id="payjpCheckout"></div>);
 }
 
-export default PayjpCheckoutFunc;
+export default PayjpCheckout;
