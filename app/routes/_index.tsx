@@ -1,10 +1,9 @@
 import type { MetaFunction } from "@remix-run/node";
-import { useState, useEffect } from "react";
 import { json } from "@remix-run/node"
-// @ts-ignore
 import { ClientOnly } from "remix-utils/client-only"
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react'
 import PayjpCheckout from '~/components/func/payjp-checkout'
+import type { PayjpCheckoutPayload, PayjpCheckoutErrorPayload } from '~/components/func/payjp-checkout'
 
 export const meta: MetaFunction = () => {
   return [{ title: "Remix Pay.jp Checkout sample App" }];
@@ -15,11 +14,11 @@ export async function loader() {
     env: {
       PAYJP_PUBLIC_KEY: process.env.PAYJP_PUBLIC_KEY,
     },
-  });
+  })
 }
 
 export default function Index() {
-  const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>()
 
   const payjpCheckoutProps = {
     dataKey: data.env.PAYJP_PUBLIC_KEY,
@@ -29,12 +28,12 @@ export default function Index() {
     onFailedHandler: onFailed,
   }
 
-  function onCreated(payload: any) {
+  function onCreated(payload: PayjpCheckoutPayload) {
     //console.log(payload)
     console.log(payload.token)
   }
 
-  function onFailed(payload: any) {
+  function onFailed(payload: PayjpCheckoutErrorPayload) {
     console.log(payload.message)
   }
 
@@ -47,5 +46,5 @@ export default function Index() {
         { () => <PayjpCheckout {...payjpCheckoutProps} /> }
       </ClientOnly>
     </div>
-  );
+  )
 }
