@@ -40,11 +40,11 @@ export default function Class() {
   return (
     <div className="payjpButtonArea">
       <div>class component</div>
-      <div><Link to="/">function component</Link></div>
-      {/* <div><a href="/func">function component</a></div> */}
       <ClientOnly>
         { () => <PayjpCheckout {...payjpCheckoutProps} /> }
       </ClientOnly>
+      <div><Link to="/">function component</Link></div>
+      {/* <div><a href="/">function component</a></div> */}
     </div>
   )
 }

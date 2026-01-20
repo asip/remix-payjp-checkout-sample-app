@@ -40,11 +40,11 @@ export default function Index() {
   return (
     <div className="payjpButtonArea">
       <div>function component</div>
-      <div><Link to="/class" >class component</Link></div>
-      {/* <div><a href="/">class component</a></div> */}
       <ClientOnly>
         { () => <PayjpCheckout {...payjpCheckoutProps} /> }
       </ClientOnly>
+      <div><Link to="/class" >class component</Link></div>
+      {/* <div><a href="/class">class component</a></div> */}
     </div>
   )
 }
