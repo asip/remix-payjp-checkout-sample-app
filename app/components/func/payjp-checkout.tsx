@@ -18,14 +18,14 @@ interface PayjpCheckoutErrorResponse {
   // type: string
 }
 
-interface PayjpWindow extends Window {
-  payjpCheckoutOnCreated: ((response: PayjpCheckoutResponse) => void) | null
-  payjpCheckoutOnFailed: ((statusCode: number, errorResponse: PayjpCheckoutErrorResponse) => void) | null
-  // alert: () => void
-  PayjpCheckout: unknown | null
+declare global {
+  interface Window {
+    payjpCheckoutOnCreated: ((response: PayjpCheckoutResponse) => void) | null
+    payjpCheckoutOnFailed: ((statusCode: number, errorResponse: PayjpCheckoutErrorResponse) => void) | null
+    // alert: () => void
+    PayjpCheckout: unknown | null
+  }
 }
-
-declare const window: PayjpWindow
 
 interface PayjpCheckoutProps {
   className?: string
